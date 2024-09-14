@@ -4,69 +4,89 @@ import { useEffect, useState } from "react";
 import { Container, Grid } from "@mui/system";
 import Navbar from "./components/navbar/page";
 import PokemonCard from "./components/pokemonCard/page";
+import axios from "axios";
 
 export default function Home() {
   const [pokemons, setPokemons] = useState([]);
-  let details = [];
-
-  useEffect(() => {
-    fetchPokemons();
-  }, []);
 
   useEffect(() => {
     fetchPokemonDetails();
-  }, [pokemons]);
+  }, []);
 
-  const fetchPokemons = async () => {
+  const fetchPokemonDetails = () => {
     try {
-      const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon?limit=12"
-      );
+      let endpoints = [];
 
-      const { results } = await response.json();
+      for (let i = 1; i < 49; i++) {
+        endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
+      }
 
-      setPokemons(results);
+      const response = axios
+        .all(endpoints.map((endpoint) => axios.get(endpoint)))
+        .then((res) => setPokemons(res));
+
+      return response;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchPokemonDetails = async () => {
-    try {
-      const pokemonNames = pokemons.map((pokemon) => pokemon.name);
+  const filterPokemons = (name) => {
+    let filteredPokemons = [];
 
-      pokemonNames.forEach(async (pokemonName) => {
-        const pokemonDetails = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
-        );
-
-        const { name, abilities, sprites, stats, types } =
-          await pokemonDetails.json();
-        details.push([{ name, abilities, sprites, stats, types }]);
-
-        return details;
-      });
-    } catch (error) {
-      console.log(error);
+    if (name === "") {
+      fetchPokemonDetails();
     }
+
+    for (let i in pokemons) {
+      if (pokemons[i].data.name.includes(name)) {
+        filteredPokemons.push(pokemons[i]);
+      }
+    }
+
+    setPokemons(filteredPokemons);
+  };
+
+  const filterPowerLevel = (pokemons, order = "desc") => {
+    console.log("chegou");
+
+    return [...pokemons].sort((a, b) => {
+      if (order === "desc") {
+        return a.data.stats[1].base_stat - b.data.stats[1].base_stat;
+      } else {
+        return b.data.stats[1].base_stat - a.data.stats[1].base_stat;
+      }
+    });
+  };
+
+  const handleFilterPowerLevel = (order = "desc") => {
+    const orderedPokemons = filterPowerLevel(pokemons, order);
+
+    setPokemons(orderedPokemons);
   };
 
   return (
-    <div>
-      <main>
-        <Navbar />
-        <div className="flex gap-5">
-          <Container maxWidth="xl">
-            <Grid container spacing={5}>
-              {pokemons.map((pokemon, key) => (
-                <Grid size={3} key={key}>
-                  <PokemonCard details={details} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </div>
-      </main>
-    </div>
+    <main>
+      <Navbar
+        filterPokemons={filterPokemons}
+        handleFilterPowerLevel={handleFilterPowerLevel}
+      />
+      <div className="flex gap-5 margin-top m-5">
+        <Container maxWidth="xl">
+          <Grid container spacing={4}>
+            {pokemons.map((pokemon, key) => (
+              <Grid size={2} key={key}>
+                <PokemonCard
+                  name={pokemon.data.name}
+                  image={pokemon.data.sprites.front_default}
+                  power={pokemon.data.stats[1].base_stat}
+                  types={pokemon.data.types}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </div>
+    </main>
   );
 }
