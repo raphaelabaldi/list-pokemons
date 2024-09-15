@@ -7,6 +7,8 @@ import {
   formatStats,
 } from "@/app/utils/functions";
 import { fetchData } from "@/app/tools/api";
+import Link from "next/link";
+import Navbar from "@/app/components/navbar/page";
 
 export default function PokemonPage({
   searchParams,
@@ -62,50 +64,68 @@ export default function PokemonPage({
         <div>Loading...</div>
       ) : (
         <>
-          <section className="flex items-center gap-14 justify-center">
-            <div className="min-w-800">
-              <img
-                className="h-600"
-                src={sprites?.front_default}
-                alt={searchParams.name}
-              />
-            </div>
+          <Navbar isSearchNav={false} />
+          <div className="flex flex-col justify-center mt-40">
+            <section className="flex flex-col items-center gap-14 justify-center">
+              <div className="flex gap-4">
+                <div className="bg-white rounded-md shadow-sm">
+                  <img
+                    className="h-100 w-60"
+                    src={sprites?.front_default}
+                    alt={searchParams.name}
+                  />
+                </div>
+                <div className="bg-white rounded-md shadow-sm">
+                  <img
+                    className="h-100 w-60"
+                    src={sprites?.back_default}
+                    alt={searchParams.name}
+                  />
+                </div>
+              </div>
+            </section>
+            <section className="flex items-start gap-14 justify-center text-justify bg-white rounded-md shadow-md h-fit w-fit mt-12 p-8">
+              <div>
+                <p className="bg-slate-200 rounded-md font-semibold text-center w-full">
+                  Name
+                </p>
+                <p className="text-center"> {searchParams.name}</p>
+              </div>
 
-            <div className="min-w-800">
-              <img
-                className="h-600"
-                src={sprites?.back_default}
-                alt={searchParams.name}
-              />
-            </div>
-          </section>
-          <section className="flex items-center gap-14 justify-center mt-50">
-            <div className="min-w-300">
-              <h2 className="font-semibold">Name: {searchParams.name}</h2>
-            </div>
+              <div>
+                <p className="bg-slate-200 rounded-md text-center font-semibold w-full">
+                  Type
+                </p>
+                <p className="text-center">{types}</p>
+              </div>
 
-            <div className="min-w-300">
-              <p>Type: {types}</p>
-            </div>
+              <div>
+                <div className="flex flex-col items-center w-full">
+                  <p className="bg-slate-200 rounded-md text-center font-semibold w-full">
+                    Power Stats
+                  </p>
+                  <p className="text-center">
+                    {stats.map((stat, index) => (
+                      <p key={index}>
+                        {stat.name}: {stat.power}
+                      </p>
+                    ))}
+                  </p>
+                </div>
+              </div>
 
-            <div className="min-w-300">
-              <div className="flex flex-col items-center w-full">
-                <h3>Power Stats:</h3>
-                {stats.map((stat, index) => (
-                  <p key={index}>
-                    {stat.name}: {stat.power}
+              <div>
+                <div className="bg-slate-200 rounded-md text-center font-semibold w-full">
+                  Abilities
+                </div>
+                {abilities.map((ability, index) => (
+                  <p className="text-center" key={index}>
+                    {ability.name}
                   </p>
                 ))}
               </div>
-            </div>
-
-            <div className="min-w-300">
-              <div>Abilities:</div>
-              {abilities.map((ability, index) => (
-                <p key={index}>{ability.name}</p>
-              ))}
-            </div>
-          </section>
+            </section>
+          </div>
         </>
       )}
     </main>

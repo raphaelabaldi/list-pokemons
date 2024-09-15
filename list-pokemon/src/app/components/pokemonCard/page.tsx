@@ -18,9 +18,9 @@ export default function PokemonCard({
 
   return (
     <div className="max-w-xs bg-white shadow-md rounded-xl overflow-hidden">
-      <img className="h-48 w-full object-cover" src={image} alt={name} />
+      <img className="h-100 w-60 object-cover mx-auto" src={image} alt={name} />
       <div className="p-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col justify-between items-center">
           <h5 className="text-xl font-bold">{name}</h5>
           <p className="text-sm text-gray-500">{checkTypes(types)}</p>
         </div>

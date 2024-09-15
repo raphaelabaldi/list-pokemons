@@ -71,7 +71,7 @@ export default function Home() {
       />
       <div className="flex gap-5 margin-top m-5">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             {pokemons.map((pokemon, key) => (
               <div key={key}>
                 <PokemonCard
