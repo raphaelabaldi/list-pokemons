@@ -6,8 +6,7 @@ import {
   formatStats,
 } from "@/app/utils/functions";
 import { fetchData } from "@/app/tools/api";
-import Link from "next/link";
-import Navbar from "@/app/components/navbar/page";
+import Navbar from "@/app/components/Navbar/Navbar";
 
 export default function PokemonPage({
   searchParams,

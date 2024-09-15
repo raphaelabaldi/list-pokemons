@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "@/app/components/navbar/page";
-import PokemonCard from "@/app/components/pokemonCard/page";
+import Navbar from "@/app/components/Navbar/Navbar";
+import PokemonCard from "@/app/components/PokemonCard/PokemonCard";
 import { fetchData } from "@/app/tools/api";
 
 interface Pokemon {
