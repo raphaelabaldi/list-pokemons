@@ -23,14 +23,14 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="bg-blue-500 p-4 shadow-md">
-      <nav className="max-w-7xl mx-auto flex items-center justify-between">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between">
         {isSearchNav ? (
           <>
             <div className="relative">
               <label htmlFor="search" className="sr-only">
                 Search
               </label>
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg
                   className="h-5 w-5 text-gray-400"
                   fill="currentColor"
@@ -48,13 +48,13 @@ const Navbar: React.FC<NavbarProps> = ({
                 type="text"
                 placeholder="Search…"
                 aria-label="search"
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 leading-5 placeholder-gray-500 focus:border-blue-500 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
                 onChange={({ target: { value } }) =>
                   filterPokemons && filterPokemons(value)
                 }
               />
             </div>
-            <div className="flex gap-4 ml-4">
+            <div className="ml-4 flex gap-4">
               <div className="relative">
                 <label
                   htmlFor="pokemon-filter"
@@ -66,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   id="pokemon-filter"
                   value={order}
                   onChange={handleChange}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                 >
                   <option value="" disabled>
                     Choose power level
@@ -79,8 +79,8 @@ const Navbar: React.FC<NavbarProps> = ({
           </>
         ) : (
           <>
-            <button className="bg-white hover:bg-slate-200 text-blue-500 font-bold py-2 px-4 rounded-xl shadow-md">
-              <Link href="/">Voltar</Link>
+            <button className="rounded-xl bg-white px-4 py-2 font-bold text-blue-500 shadow-md hover:bg-slate-200">
+              <Link href="/">Go back</Link>
             </button>
           </>
         )}

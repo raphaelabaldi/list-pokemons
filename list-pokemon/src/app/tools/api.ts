@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: "https://pokeapi.co/api/v2/pokemon",
 });
 
-export const fetchData = async (url, options = {}) => {
+export const fetchData = async (url: string, options = {}) => {
   try {
     const response = await axiosInstance(url, options);
     return response.data;

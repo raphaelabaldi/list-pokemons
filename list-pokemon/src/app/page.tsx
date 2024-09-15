@@ -1,11 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "./components/navbar/page";
-import PokemonCard from "./components/pokemonCard/page";
-import axios from "axios";
+import Navbar from "@/app/components/navbar/page";
+import PokemonCard from "@/app/components/pokemonCard/page";
+import { fetchData } from "@/app/tools/api";
+
+interface Pokemon {
+  name: string;
+  sprites: {
+    front_default: string;
+  };
+  stats: {
+    base_stat: number;
+  }[];
+  types: {
+    type: {
+      name: string;
+    };
+  }[];
+}
 
 export default function Home() {
-  const [pokemons, setPokemons] = useState([]);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   useEffect(() => {
     fetchPokemonDetails();
@@ -16,50 +31,47 @@ export default function Home() {
       const endpoints = [];
 
       for (let i = 1; i < 49; i++) {
-        endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
+        endpoints.push(`/${i}`);
       }
 
       const responses = await Promise.all(
-        endpoints.map((endpoint) => axios.get(endpoint))
+        endpoints.map((endpoint) => fetchData(endpoint)),
       );
 
-      const pokemonData = responses.map((res) => res.data);
-
-      setPokemons(pokemonData);
+      setPokemons(responses);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const filterPokemons = (name) => {
-    let filteredPokemons = [];
-
+  const filterPokemons = (name: string) => {
     if (name === "") {
       fetchPokemonDetails();
+      return;
     }
 
-    for (let i in pokemons) {
-      if (pokemons[i].name.includes(name)) {
-        filteredPokemons.push(pokemons[i]);
-      }
-    }
+    const filteredPokemons = pokemons.filter((pokemon) =>
+      pokemon.name.includes(name),
+    );
 
     setPokemons(filteredPokemons);
   };
 
-  const filterPowerLevel = (pokemons, order = "desc") => {
+  const filterPowerLevel = (
+    pokemons: Pokemon[],
+    order: "asc" | "desc" = "desc",
+  ) => {
     return [...pokemons].sort((a, b) => {
-      if (order === "desc") {
-        return a.stats[1].base_stat - b.stats[1].base_stat;
-      } else {
+      if (order === "asc") {
         return b.stats[1].base_stat - a.stats[1].base_stat;
+      } else {
+        return a.stats[1].base_stat - b.stats[1].base_stat;
       }
     });
   };
 
-  const handleFilterPowerLevel = (order = "desc") => {
+  const handleFilterPowerLevel = (order: "asc" | "desc" = "desc") => {
     const orderedPokemons = filterPowerLevel(pokemons, order);
-
     setPokemons(orderedPokemons);
   };
 
@@ -69,16 +81,16 @@ export default function Home() {
         filterPokemons={filterPokemons}
         handleFilterPowerLevel={handleFilterPowerLevel}
       />
-      <div className="flex gap-5 margin-top m-5">
+      <div className="flexflex-wrapjustify-center margin-top m-5 gap-5">
         <div className="container mx-auto">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {pokemons.map((pokemon, key) => (
-              <div key={key}>
+              <div key={key} className="sm:w-1/2 md:w-full">
                 <PokemonCard
-                  name={pokemon.name}
-                  image={pokemon.sprites.front_default}
-                  power={pokemon.stats[1].base_stat}
-                  types={pokemon.types}
+                  name={pokemon?.name}
+                  image={pokemon?.sprites?.front_default}
+                  power={pokemon?.stats[1]?.base_stat}
+                  types={pokemon?.types}
                 />
               </div>
             ))}
