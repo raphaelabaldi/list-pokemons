@@ -1,10 +1,16 @@
 # list-pokemons
 
-List some information about pokemon stats
+Challenge for AgiBank squad, in which we list some information about pokemon stats; like name, abilities, type and power. This app can filter by name of pokemon or power level, while also providing with images from the pokemons. Clicking on the pokemon stats button, check the details of the chosen pokemon.
 
 ## Getting Started
 
-First, run the development server:
+First, install the packages:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -17,8 +23,6 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
