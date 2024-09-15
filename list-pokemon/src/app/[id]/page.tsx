@@ -6,19 +6,26 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function PokemonPage({ searchParams }) {
-  const pokemonDetail = async () => {
+  const [details, setDetails] = useState([]);
+
+  useEffect(() => {
+    getPokemonDetail();
+  }, []);
+
+  const getPokemonDetail = () => {
     try {
-      const details = axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${searchParams.name}`
-      );
+      return axios
+        .get(`https://pokeapi.co/api/v2/pokemon/${searchParams.name}`)
+        .then((res) => setDetails(res));
     } catch (error) {
       console.log(error);
     }
   };
 
-  pokemonDetail();
+  console.log("detalhe do pokemon", details.data);
 
   return (
     <main>
@@ -33,8 +40,8 @@ export default function PokemonPage({ searchParams }) {
             </Typography>
             <CardMedia
               sx={{ height: 600 }}
-              // image={pokemonDetail.sprites.front_default}
-              title={name}
+              image={details.data.sprites.front_default}
+              title={searchParams.name}
             />
           </CardContent>
         </Card>
@@ -49,15 +56,15 @@ export default function PokemonPage({ searchParams }) {
             </Typography>
             <CardMedia
               sx={{ height: 180 }}
-              // image={pokemonDetail.sprites.back_default}
-              title={name}
+              image={details.data.sprites.back_default}
+              title={searchParams.name}
             />
           </CardContent>
         </Card>
       </Box>
       <Box>
         <Typography className="font-semibold">
-          Name: {name}
+          Name: {searchParams.name}
           {/* Type: {pokemonDetail.types}
           Abilities: {pokemonDetail.abilities} */}
         </Typography>

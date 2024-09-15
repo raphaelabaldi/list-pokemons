@@ -6,16 +6,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { Box } from "@mui/system";
+import { checkTypes } from "@/app/utils/functions";
 
 export default function PokemonCard({ name, image, power, types }) {
   const pokemonNameURL = `/${name}`;
-
-  const checkTypes = () => {
-    if (types[1]) {
-      return types[0].type.name + " | " + types[1].type.name;
-    }
-    return types[0].type.name;
-  };
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -26,7 +20,7 @@ export default function PokemonCard({ name, image, power, types }) {
             {name}
           </Typography>
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            {checkTypes()}
+            {checkTypes(types)}
           </Typography>
         </Box>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
