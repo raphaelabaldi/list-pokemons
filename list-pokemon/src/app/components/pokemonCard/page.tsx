@@ -1,45 +1,38 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { Box } from "@mui/system";
 import { checkTypes } from "@/app/utils/functions";
 
-export default function PokemonCard({ name, image, power, types }) {
+interface PokemonCardProps {
+  name: string;
+  image: string;
+  power: number;
+  types: string[];
+}
+
+export default function PokemonCard({
+  name,
+  image,
+  power,
+  types,
+}: PokemonCardProps) {
   const pokemonNameURL = `/${name}`;
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia sx={{ height: 180 }} image={image} title={name} />
-      <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography gutterBottom variant="h5" component="div">
-            {name}
-          </Typography>
-          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            {checkTypes(types)}
-          </Typography>
-        </Box>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          Power Level: {power}
-        </Typography>
-      </CardContent>
-      <CardActions className="flex items-center justify-center">
-        <Button size="small" className="rounded-xl shadow-md text-center ">
-          <Link
-            href={{
-              pathname: `${pokemonNameURL}`,
-              query: { name: name },
-            }}
-            font-style="bold"
-          >
+    <div className="max-w-xs bg-white shadow-md rounded-xl overflow-hidden">
+      <img className="h-48 w-full object-cover" src={image} alt={name} />
+      <div className="p-4">
+        <div className="flex justify-between items-center">
+          <h5 className="text-xl font-bold">{name}</h5>
+          <p className="text-sm text-gray-500">{checkTypes(types)}</p>
+        </div>
+        <p className="text-sm text-gray-500">Power Level: {power}</p>
+      </div>
+      <div className="flex items-center justify-center p-4">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl shadow-md">
+          <Link href={{ pathname: `${pokemonNameURL}`, query: { name: name } }}>
             stats
           </Link>
-        </Button>
-      </CardActions>
-    </Card>
+        </button>
+      </div>
+    </div>
   );
 }
