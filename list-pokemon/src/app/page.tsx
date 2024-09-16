@@ -40,7 +40,7 @@ export default function Home() {
 
       setPokemons(responses);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

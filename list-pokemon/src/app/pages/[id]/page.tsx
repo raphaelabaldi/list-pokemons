@@ -34,8 +34,8 @@ export default function PokemonPage({
       setSprites(sprites);
       loadPokemonDetails(types, stats, abilities);
       setLoading(false);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
