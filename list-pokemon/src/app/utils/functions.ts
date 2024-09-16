@@ -1,28 +1,47 @@
-export const checkTypes = (types) => {
+interface Type {
+  type: {
+    name: string;
+  };
+}
+
+interface Stat {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+
+interface Ability {
+  ability: {
+    name: string;
+  };
+}
+
+export const checkTypes = (types: Type[]): string => {
   if (types[1]) {
     return types[0].type.name + " | " + types[1].type.name;
   }
   return types[0].type.name;
 };
 
-export const formatStats = (stats) => {
-  let formatedStats = [];
+export const formatStats = (
+  stats: Stat[],
+): { power: number; name: string }[] => {
+  let formattedStats: { power: number; name: string }[] = [];
 
   stats.forEach((stat) => {
-    formatedStats.push({ power: stat.base_stat, name: stat.stat.name });
+    formattedStats.push({ power: stat.base_stat, name: stat.stat.name });
   });
 
-  return formatedStats;
+  return formattedStats;
 };
 
-export const formatAbilities = (abilities) => {
-  console.log("ABILITIES NO FORMAT", abilities);
-  let formatedAbilities = [];
+export const formatAbilities = (abilities: Ability[]): { name: string }[] => {
+  let formattedAbilities: { name: string }[] = [];
 
   abilities.forEach((ability) => {
-    formatedAbilities.push({ name: ability.ability.name });
+    formattedAbilities.push({ name: ability.ability.name });
   });
 
-  console.log("formated", formatedAbilities);
-  return formatedAbilities;
+  return formattedAbilities;
 };

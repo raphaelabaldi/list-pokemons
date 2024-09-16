@@ -14,15 +14,10 @@ export default function PokemonPage({
   searchParams: { name: string };
 }) {
   const [loading, setLoading] = useState(true);
-  const [types, setTypes] = useState<string[]>([]);
-  const [stats, setStats] = useState<{ name: string; power: number }[]>([]);
-  const [abilities, setAbilities] = useState<{ name: string }[]>([]);
-  const [sprites, setSprites] = useState<{
-    front_default: string;
-    back_default: string;
-  } | null>(null);
-
-  console.log("name", searchParams.name);
+  const [types, setTypes] = useState([]);
+  const [stats, setStats] = useState([]);
+  const [abilities, setAbilities] = useState([]);
+  const [sprites, setSprites] = useState();
 
   useEffect(() => {
     getPokemonDetail();
@@ -44,11 +39,7 @@ export default function PokemonPage({
     }
   };
 
-  const loadPokemonDetails = (
-    types: string[],
-    stats: { name: string; power: number }[],
-    abilities: { name: string }[],
-  ) => {
+  const loadPokemonDetails = (types, stats, abilities) => {
     setTypes(checkTypes(types));
     setStats(formatStats(stats));
     setAbilities(formatAbilities(abilities));
